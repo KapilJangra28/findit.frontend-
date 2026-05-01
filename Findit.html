@@ -1598,5 +1598,112 @@
     }
   });
 </script>
+  <!-- ONLY SHOWING MODIFIED PARTS YOU NEED TO ADD AT END OF YOUR FILE -->
+
+<script>
+const BASE_URL = "https://findit-backend-bd3u.onrender.com"; // 🔥 replace with your backend
+
+// ================= LOGIN =================
+async function loginUser(email, password) {
+  try {
+    const res = await fetch(`${BASE_URL}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      localStorage.setItem("token", data.token);
+      alert("Login successful ✅");
+    } else {
+      alert(data.message || "Login failed");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// ================= FETCH ITEMS =================
+async function loadItems() {
+  try {
+    const res = await fetch(`${BASE_URL}/api/items`);
+    const items = await res.json();
+
+    const grid = document.getElementById("itemsGrid");
+    if (!grid) return;
+
+    grid.innerHTML = "";
+
+    items.forEach(item => {
+      const div = document.createElement("div");
+
+      div.innerHTML = `
+        <div class="listing-card">
+          <div class="listing-body">
+            <h3>${item.title}</h3>
+            <p>${item.description}</p>
+            <small>${item.location || ""}</small>
+          </div>
+        </div>
+      `;
+
+      grid.appendChild(div);
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// ================= SUBMIT FOUND ITEM =================
+async function submitFoundForm() {
+  const title = document.getElementById("f-name").value;
+  const description = document.getElementById("f-desc").value;
+  const location = document.getElementById("f-loc").value;
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Please login first");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BASE_URL}/api/items`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        location,
+        type: "found"
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("Item posted successfully ✅");
+      loadItems();
+    } else {
+      alert(data.message || "Error posting item");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// ================= AUTO LOAD =================
+window.onload = () => {
+  loadItems();
+};
+</script>
+
 </body>
 </html>
