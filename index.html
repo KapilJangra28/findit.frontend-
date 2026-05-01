@@ -770,7 +770,7 @@
     </h1>
     <p class="hero-sub">A secure platform reuniting campus and hostel students with their valuable belongings — faster, safer, and smarter than ever before.</p>
     <div class="hero-actions">
-      <button class="btn-hero-primary" onclick="scrollTo('rseport')">Report an Item</button>
+      <button class="btn-hero-primary" onclick="scrollTo('report')">Report an Item</button>
       <button class="btn-hero-secondary" onclick="scrollTo('search-section')">Browse Items</button>
     </div>
     <div class="hero-stats">
@@ -1451,7 +1451,11 @@
       if (query) params.append('search', query);
       
       const url = `${API_URL}/items${params.toString() ? '?' + params : ''}`;
-      const data = await fetchAPI(url);
+      const response = await fetchAPI(url);
+
+      const items = Array.isArray(response)
+        ? response
+        : response.data || response.items || [];
       if (data.success) {
         ITEMS = data.items.map(item => ({
           id: item._id,
