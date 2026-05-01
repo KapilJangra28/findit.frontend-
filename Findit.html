@@ -1703,9 +1703,6 @@ async function submitFoundForm() {
 window.onload = () => {
   loadItems();
 };
-</script>
-<script>
-const BASE_URL = "https://findit-backend-bd3u.onrender.com"; // 🔥 replace this
 
 // ================= LOAD ITEMS =================
 async function loadItems() {
@@ -1713,7 +1710,6 @@ async function loadItems() {
     const res = await fetch(`${BASE_URL}/api/items`);
     const response = await res.json();
 
-    // ✅ FIX (VERY IMPORTANT)
     const items = response.data || response.items || [];
 
     const grid = document.getElementById("itemsGrid");
@@ -1726,9 +1722,10 @@ async function loadItems() {
 
       div.innerHTML = `
         <div class="listing-card">
+          <div class="listing-img">📦</div>
           <div class="listing-body">
-            <h3>${item.title}</h3>
-            <p>${item.description}</p>
+            <div class="listing-name">${item.title || "Item"}</div>
+            <div class="listing-loc">📍 ${item.location || ""}</div>
           </div>
         </div>
       `;
@@ -1737,7 +1734,7 @@ async function loadItems() {
     });
 
   } catch (err) {
-    console.error("Error loading items:", err);
+    console.error("Error:", err);
   }
 }
 
