@@ -1704,6 +1704,87 @@ window.onload = () => {
   loadItems();
 };
 </script>
+<script>
+const BASE_URL = "https://findit-backend-bd3u.onrender.com"; // 🔥 replace this
 
+// ================= LOAD ITEMS =================
+async function loadItems() {
+  try {
+    const res = await fetch(`${BASE_URL}/api/items`);
+    const response = await res.json();
+
+    // ✅ FIX (VERY IMPORTANT)
+    const items = response.data || response.items || [];
+
+    const grid = document.getElementById("itemsGrid");
+    if (!grid) return;
+
+    grid.innerHTML = "";
+
+    items.forEach(item => {
+      const div = document.createElement("div");
+
+      div.innerHTML = `
+        <div class="listing-card">
+          <div class="listing-body">
+            <h3>${item.title}</h3>
+            <p>${item.description}</p>
+          </div>
+        </div>
+      `;
+
+      grid.appendChild(div);
+    });
+
+  } catch (err) {
+    console.error("Error loading items:", err);
+  }
+}
+
+// ================= SUBMIT FOUND ITEM =================
+async function submitFoundForm() {
+  const title = document.getElementById("f-name").value;
+  const description = document.getElementById("f-desc").value;
+  const location = document.getElementById("f-loc").value;
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Please login first");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${BASE_URL}/api/items`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        location,
+        type: "found"
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      alert("Item posted successfully ✅");
+      loadItems();
+    } else {
+      alert(data.message || "Error");
+    }
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// ================= AUTO LOAD =================
+window.onload = loadItems;
+</script>
 </body>
 </html>
