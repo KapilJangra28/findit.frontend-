@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Findit Admin Dashboard</title>
@@ -319,8 +320,10 @@
 </div>
 
 <script>
-  const API_URL = 'http://localhost:5000/api';
-  let token = localStorage.getItem('adminToken');
+const BASE_URL = "https://findit-backend-bd3u.onrender.com";
+
+const API_URL = `${BASE_URL}/api`;
+const socket = io(BASE_URL);
 
   // Login
   async function adminLogin() {
