@@ -1388,9 +1388,9 @@
 
 <script>
   // ── BACKEND CONFIG ──
-  const API_URL = 'http://localhost:5000/api';
-  const socket = io('http://localhost:5000');
-
+  const API_URL = 'https://findit-backend-bd3u.onrender.com/api';
+  const socket = io('https://findit-backend-bd3u.onrender.com');
+  
   // ── AUTH HELPERS ──
   function getToken() { return localStorage.getItem('findit_token'); }
   function getUser() { return JSON.parse(localStorage.getItem('findit_user') || 'null'); }
