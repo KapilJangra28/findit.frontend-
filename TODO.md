@@ -1,34 +1,54 @@
-# Findit Backend - COMPLETED ✅
+# Admin Forgot Password Feature - Implementation Steps
 
-All phases have been completed successfully!
+## Plan Breakdown
+1. **✅ Plan approved by user**
+2. **Install dependencies** (nodemailer)
+3. **Update User model** (ensure password hashing)
+4. **Add backend controllers** (forgot-password, reset-password in adminController.js)
+5. **Add backend routes** (admin.js)
+6. **Update admin.html** (add forgot password UI)
+7. **Create reset-password.html** (new frontend page)
+8. **Test the flow** (login page → forgot → email → reset → login)
+9. **Update TODO.md** (mark complete)
+10. **User adds .env email vars & tests**
 
-## Completed Components
+## Current Status
+Steps 1-5 ✅ Complete:
+- Plan approved
+- nodemailer installed
+- User model OK
+- Controllers added (forgot/reset)
+- Routes added (public /forgot-password, /reset-password)
 
-### Backend (e:/campus finds/backend/)
-- ✅ package.json - Dependencies
-- ✅ server.js - Express + Socket.io
-- ✅ .env - Environment variables
-- ✅ config/db.js - MongoDB connection
-- ✅ config/upload.js - Multer + Cloudinary
-- ✅ models/User.js - User model
-- ✅ models/Item.js - Item model
-- ✅ models/Message.js - Message model
-- ✅ controllers/authController.js
-- ✅ controllers/itemController.js
-- ✅ controllers/messageController.js
-- ✅ controllers/adminController.js
-- ✅ routes/auth.js
-- ✅ routes/items.js
-- ✅ routes/messages.js
-- ✅ routes/admin.js
-- ✅ middleware/auth.js - JWT protection
+**✅ Feature Complete!**
 
-### Admin Panel
-- ✅ backend/admin.html - Dashboard
+## Summary
+- Backend: `/api/admin/forgot-password` (send email), `/api/admin/reset-password` (update password)
+- Frontend: `admin.html` now has "Forgot Password?" link → email form → success message
+- New: `admin-reset-password.html` (token-based reset form → auto-redirect to login)
+- Dependencies: nodemailer installed
+- Security: Token hashed (SHA256), 10min expiry, bcrypt hashing, email verification (ADMIN_EMAIL)
 
-### Documentation
-- ✅ backend/INTEGRATION.md - Full guide
-- ✅ TODO.md - This file
+## Final Steps for User
+1. Add to `backend/.env`:
+   ```
+   NODEMAILER_HOST=smtp.gmail.com
+   NODEMAILER_PORT=587
+   NODEMAILER_USER=your-gmail@gmail.com
+   NODEMAILER_PASS=your-16-char-app-password
+   ```
+   (Get Gmail app password: Google Account > Security > App passwords)
 
-### Frontend Integration
-- ✅ M:/Findit.html - Connected to backend
+2. Restart server: `cd backend && npm start`
+
+3. Test:
+   - Open `backend/admin.html`
+   - Click "Forgot Password?" → enter ADMIN_EMAIL → "Reset link sent!"
+   - Check email → click link (`admin-reset-password.html?token=...`)
+   - Set new password → auto-redirect to login
+   - Login with new password
+
+Serve static files? Serve `backend/` folder via Express static in server.js if needed (`app.use('/admin', express.static('admin')); app.use(express.static('backend'));`)
+
+All done!
+
